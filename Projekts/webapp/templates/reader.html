@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Read Novel</title>
-</head>
+<head><title>Reading {{ novel }}</title></head>
 <body>
-    <h1>{{ sentence }}</h1>
-    <br>
+    <h2>{{ novel }} — {{ chapter }}</h2>
+    <p>{{ sentence }}</p>
     <a href="/prev"><button>&larr; Previous</button></a>
     <a href="/next"><button>Next &rarr;</button></a>
+    <br><br>
+    <a href="/"><button>Change Novel</button></a>
 </body>
 </html>
