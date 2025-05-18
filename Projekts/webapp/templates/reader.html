@@ -9,7 +9,7 @@
 <body class="d-flex justify-content-center align-items-center vh-100 theme-dark" id="page">
 <div class="text-center container">
     <h2 class="mb-4">{{ novel }} — {{ chapter }}</h2>
-    <div id="text-box" class="card card-custom bg-dark text-light border-light shadow p-4 mb-4" style="max-width: 700px;">
+    <div id="text-box" class="card card-custom bg-dark text-light border-light shadow p-4 mb-4" style="max-width: 100%; height: 500px;">
         <p id="sentence-text" class="fs-5 mb-0">{{ sentence }}</p>
     </div>
     <div class="mb-3">
@@ -23,8 +23,15 @@
         </div>
     </div>
     <div class="mb-3">
-        <label for="chapterSelect" class="form-label">📖 Jump to Chapter</label>
-        <select class="form-select bg-dark text-light" id="chapterSelect">
+        <label for="chapterSelect" class="form-label">Chapters</label>
+        <select class="form-select bg-dark text-light" id="chapterSelect" style="max-width: 200px;">
+            {% for c in chapters %}
+                <option value="{{ c }}" {% if c == chapter %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <select class="form-select bg-dark text-light" id="chapterSelect" style="max-width: 200px;">
             {% for c in chapters %}
                 <option value="{{ c }}" {% if c == chapter %}selected{% endif %}>{{ c }}</option>
             {% endfor %}
@@ -35,7 +42,7 @@
         <a href="#" id="nextBtn" class="btn btn-outline-light">Next →</a>
     </div>
     <button class="btn btn-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#settingsPanel">
-        ⚙️ Settings
+        Settings
     </button>
     <div class="collapse" id="settingsPanel">
         <div class="card card-body bg-dark text-light border-light mb-4" style="max-width: 700px; margin: 0 auto;">
