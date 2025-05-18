@@ -30,13 +30,6 @@
             {% endfor %}
         </select>
     </div>
-    <div class="mb-3">
-        <select class="form-select bg-dark text-light" id="chapterSelect" style="max-width: 200px;">
-            {% for c in chapters %}
-                <option value="{{ c }}" {% if c == chapter %}selected{% endif %}>{{ c }}</option>
-            {% endfor %}
-        </select>
-    </div>
     <div class="d-flex justify-content-center gap-3 mb-3">
         <a href="#" id="prevBtn" class="btn btn-outline-light">← Previous</a>
         <a href="#" id="nextBtn" class="btn btn-outline-light">Next →</a>
