@@ -1,0 +1,17 @@
+body {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.card-custom {
+  transition: all 0.3s ease;
+}
+
+.theme-dark {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+.theme-light {
+  background-color: #f8f9fa;
+  color: #212529;
+}
