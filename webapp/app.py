@@ -6,7 +6,7 @@ from selenium.webdriver.chrome.service import Service  # Helps configure ChromeD
 from selenium.webdriver.common.by import By  # Enum-like class for selecting elements in the DOM
 import re  # Regular expressions for string pattern matching
 from lightnovel_scraper import LightNovelScraper  # Custom class to scrape novel chapters
-import threading
+import threading # Allows tasks to run in the background without blocking the main server
 
 app = Flask(__name__)  # Create a Flask application instance
 app.secret_key = "secret"  # Secret key for session encryption
