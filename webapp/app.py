@@ -6,6 +6,7 @@ from selenium.webdriver.chrome.service import Service  # Helps configure ChromeD
 from selenium.webdriver.common.by import By  # Enum-like class for selecting elements in the DOM
 import re  # Regular expressions for string pattern matching
 from lightnovel_scraper import LightNovelScraper  # Custom class to scrape novel chapters
+import threading
 
 app = Flask(__name__)  # Create a Flask application instance
 app.secret_key = "secret"  # Secret key for session encryption
@@ -254,12 +255,20 @@ def api_next_chapter():
 @app.route('/add_novel', methods=['POST'])
 def add_novel():
     link = request.form['link']
-    try:
-        scraper = LightNovelScraper()
-        scraper.scrape_from(link)
-        return redirect(url_for('select'))
-    except Exception as e:
-        return f"Error adding novel: {str(e)}", 500
+
+    def background_scrape(link):
+        try:
+            scraper = LightNovelScraper()
+            scraper.scrape_from(link)
+        except Exception as e:
+            print(f"[ERROR] Failed to scrape: {e}")
+
+    # Run scraping in a separate thread
+    threading.Thread(target=background_scrape, args=(link,)).start()
+
+    return '', 204  # Return 204 No Content, no redirect
+
+
 
 # Start the Flask server
 if __name__ == '__main__':

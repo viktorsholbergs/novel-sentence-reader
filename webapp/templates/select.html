@@ -24,7 +24,7 @@
     </div>
     <hr>
     <h2>Add New Novel</h2>
-    <form method="post" action="/add_novel">
+    <form id="novelForm">
         <div class="mb-3">
             <label for="link" class="form-label">Link to First Chapter</label>
             <input type="text" class="form-control" id="link" name="link" required>
@@ -32,5 +32,7 @@
         <button type="submit" class="btn btn-primary">Add Novel</button>
     </form>
 </div>
+
+<script src="{{ url_for('static', filename='js/select.js') }}"></script>
 </body>
 </html>
