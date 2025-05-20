@@ -87,6 +87,25 @@ def save_progress(data):
         json.dump(data, f)
 
 
+def get_sorted_chapters(novel_name):
+    novel_path = os.path.join(NOVEL_DIR, novel_name)
+    if not os.path.exists(novel_path):
+        print(f"[ERROR] Novel path does not exist: {novel_path}")
+        return []
+
+    files = os.listdir(novel_path)
+    chapters = [f for f in files if f.lower().startswith("chapter_") and f.endswith(".txt")]
+
+    def extract_number(ch):
+        try:
+            return int(ch.lower().replace("chapter_", "").replace(".txt", ""))
+        except ValueError:
+            return float('inf')  
+
+    sorted_chapters = sorted(chapters, key=extract_number)
+    print(f"[DEBUG] Sorted chapters for '{novel_name}'")
+    return sorted_chapters
+
 
 @app.route('/')
 def home():
@@ -96,10 +115,7 @@ def home():
     for novel in novels:
         novel_path = os.path.join(NOVEL_DIR, novel)
         if os.path.isdir(novel_path):
-            chapters = sorted(
-                [f for f in os.listdir(novel_path) if f.endswith(".txt")],
-                key=lambda x: int(re.search(r'\d+', x).group()) if re.search(r'\d+', x) else float('inf')
-            )
+            chapters = get_sorted_chapters(novel)
             if chapters:
                 first_chapter = chapters[0]
                 if novel in progress and "last_chapter" in progress[novel]:
@@ -141,12 +157,12 @@ def reader():
         return redirect(url_for("home"))
     novel = session.get('novel')
     chapter = session.get('chapter')
-    chapter_list = sorted([f for f in os.listdir(os.path.join(NOVEL_DIR, novel)) if f.endswith('.txt')])
+    chapters = get_sorted_chapters(novel)
     return render_template("reader.html",
                            sentence=sentence_list.get(),
                            novel=novel,
                            chapter=chapter,
-                           chapters=chapter_list)
+                           chapters=chapters)
 
 @app.route('/api/next')
 def api_next():
@@ -226,20 +242,34 @@ def api_init():
 def api_next_chapter():
     global sentence_list
     novel = session.get('novel')
+    print(novel)
     chapter = session.get('chapter')
+    print(chapter)
     if not (novel and chapter):
         return "Session missing", 400
-    chapter_list = sorted([f for f in os.listdir(os.path.join(NOVEL_DIR, novel)) if f.endswith('.txt')])
-    try:
-        idx = chapter_list.index(chapter)
-        if idx + 1 < len(chapter_list):
-            next_chapter = chapter_list[idx + 1]
-            path = os.path.join(NOVEL_DIR, novel, next_chapter)
-            sentence_list = SentenceList(path)
-            session['chapter'] = next_chapter
-            return redirect(url_for('reader'))
-    except ValueError:
-        pass
+
+    chapter_list = get_sorted_chapters(novel)
+
+    def extract_number(name):
+        match = re.search(r'\d+', name)
+        return int(match.group()) if match else -1
+
+    current_num = extract_number(chapter)
+    print(current_num)
+    # Find the index based on the chapter number, not the string
+    idx = next(
+        (i for i, ch in enumerate(chapter_list) if extract_number(ch) == current_num),
+        None
+    )
+    print(idx)
+    if idx is not None and idx + 1 < len(chapter_list):
+        next_chapter = chapter_list[idx + 1]
+        path = os.path.join(NOVEL_DIR, novel, next_chapter)
+        sentence_list = SentenceList(path)
+        session['chapter'] = next_chapter
+        print(next_chapter)
+        return redirect(url_for('reader'))
+
     return "No next chapter", 404
 
 

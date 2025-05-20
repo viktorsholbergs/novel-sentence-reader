@@ -4,13 +4,13 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
-
+from webdriver_manager.chrome import ChromeDriverManager
 
 class LightNovelScraper:
-    def __init__(self, chromedriver_path="/usr/bin/chromedriver"):
+    def __init__(self):
         options = webdriver.ChromeOptions()
         options.add_argument("--start-maximized")
-        self.driver = webdriver.Chrome(service=Service(chromedriver_path), options=options)
+        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         self.base_url = "https://www.lightnovelworld.co"
 
     def _get_novel_name(self, url):
