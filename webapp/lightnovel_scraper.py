@@ -54,7 +54,7 @@ class LightNovelScraper:
         novel_name = self._get_novel_name(start_url)
 
         # Build folder path where chapters will be saved
-        folder_name = f"Projekts/webapp/novels/{novel_name}"
+        folder_name = f"webapp/novels/{novel_name}"
 
         # Create the folder if it doesn't exist
         os.makedirs(folder_name, exist_ok=True)
