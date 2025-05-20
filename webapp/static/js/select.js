@@ -8,10 +8,10 @@ document.getElementById("novelForm").addEventListener("submit", function(event) 
         body: formData
     }).then(response => {
         if (response.ok) {
-            // Wait 2 seconds before reloading the page
+            // Wait 3 seconds before reloading the page
             setTimeout(() => {
                 window.location.reload();
-            }, 3000);  // 2000 milliseconds = 2 seconds
+            }, 3000);  
         } else {
             alert("Error adding novel.");
         }
