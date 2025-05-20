@@ -7,7 +7,11 @@ from selenium.webdriver.common.by import By  # Enum-like class for selecting ele
 import re  # Regular expressions for string pattern matching
 from lightnovel_scraper import LightNovelScraper  # Custom class to scrape novel chapters
 import threading # Allows tasks to run in the background without blocking the main server
-
+import nltk  # Import the Natural Language Toolkit library
+# Download the Punkt sentence tokenizer model (only needs to be run once)
+#nltk.download('punkt')
+# Import the sentence tokenizer function from NLTK
+from nltk.tokenize import sent_tokenize
 app = Flask(__name__)  # Create a Flask application instance
 app.secret_key = "secret"  # Secret key for session encryption
 
@@ -32,25 +36,29 @@ class SentenceList:
         self.total = 0  # Total number of sentences
         self.load(filepath)  # Load the sentences from a file
 
+
     def load(self, filepath):
         with open(filepath, "r", encoding="utf-8") as f:
-            text = f.read()  # Read the full chapter text
-        # Split the text into sentences using '.' as a delimiter
-        sentences = [s.strip() + '.' for s in text.replace('\n', ' ').split('.') if s.strip()]
+            text = f.read()
+
+        # Use NLTK's sentence tokenizer (handles punctuation, abbreviations, etc.)
+        sentences = [s.strip() for s in sent_tokenize(text)]
+
         self.total = len(sentences)  # Store sentence count
         prev_node = None
         for sentence in sentences:
-            node = SentenceNode(sentence)  # Create a new node
+            node = SentenceNode(sentence) # Create a new node
             if not self.head:
-                self.head = node  # Set head if first node
+                self.head = node # Set head if first node
             else:
-                prev_node.next = node  # Link previous node to this
-                node.prev = prev_node  # Link back to previous
+                prev_node.next = node # Link previous node to this
+                node.prev = prev_node # Link back to previous
             prev_node = node
-        self.tail = prev_node  # Store the tail
-        self.current = self.head  # Start at the beginning
-        self.index = 1  # Reset index
 
+        self.tail = prev_node # Store the tail
+        self.current = self.head # Start at the beginning
+        self.index = 1 # Reset index
+    
     def get(self):
         return self.current.sentence if self.current else "The End."  # Return the current sentence
 
@@ -74,6 +82,7 @@ class SentenceList:
         self.index = 1
         while self.index < index:
             self.next()  # Move to desired index
+    
 
 sentence_list = None  # Global variable for current SentenceList
 
