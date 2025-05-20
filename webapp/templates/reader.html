@@ -37,11 +37,7 @@
     <div class="container text-center">
         <div class="row">
             <div class="col">
-                <select class="form-select bg-dark text-light" id="chapterSelect" style="max-width: 200px;">
-                    {% for c in chapters %}
-                        <option value="{{ c }}" {% if c == chapter %}selected{% endif %}>{{ c }}</option>
-                    {% endfor %}
-                </select>
+                
             </div>
             <div class="col">
                 <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#settingsPanel">
@@ -104,6 +100,14 @@
         </div>
     </div>
 </div>
+<div style="display: none;">
+    <select class="form-select bg-dark text-light" id="chapterSelect" style="max-width: 200px;">
+        {% for c in chapters %}
+            <option value="{{ c }}" {% if c == chapter %}selected{% endif %}>{{ c }}</option>
+        {% endfor %}
+    </select>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ url_for('static', filename='js/reader.js') }}"></script>
 </body>
