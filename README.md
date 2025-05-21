@@ -3,17 +3,17 @@
 
 ## Projekta apraksts
 
-**Novel Sentence Reader** ir personalizēta tīmekļa lietotne, kas izstrādāta ar mērķi padarīt "light novels" lasīšanu ērtāku un efektīvāku. Šī sistēma automatizē procesu, kurā lietotājs meklē, lejupielādē un lasa "light novels" saturu. Tradicionāli "light novels" tiek lasītas lielos, nepārtrauktos teksta blokos, kas daudziem lietotājiem var būt grūti pārskatāmi, īpaši, ja teksts nav labi strukturēts. Šis projekts piedāvā risinājumu – sadalīt saturu pa atsevišķiem teikumiem un attēlot tos lietotājam vienu pēc otra, ļaujot koncentrēties uz vienu domu vienlaikus. Tādējādi tiek samazināts kognitīvais slogs un uzlabota teksta uztvere.
+**Novel Sentence Reader** ir personalizēta tīmekļa lietotne, kas izstrādāta ar mērķi padarīt "light novel" lasīšanu ērtāku un efektīvāku. Šī sistēma automatizē procesu, kurā lietotājs meklē, lejupielādē un lasa "light novels" saturu. Tradicionāli "light novels" tiek lasītas lielos, nepārtrauktos teksta blokos, kas daudziem cilvēkiem var būt grūti pārskatāmi, īpaši, ja teksts nav labi strukturēts. Šis projekts piedāvā risinājumu – sadalīt saturu pa atsevišķiem teikumiem un attēlot tos lietotājam vienu pēc otra, ļaujot koncentrēties uz vienu domu vienlaikus. Tādējādi tiek samazināts kognitīvais slogs un uzlabota teksta uztvere.
 
 Projekts sastāv no divām galvenajām daļām: tīmekļa skrāpēšanas skripta un pašas lietotnes. Tīmekļa skripts, izmantojot Selenium bibliotēku, apmeklē vietni [lightnovelworld.co](https://www.lightnovelworld.co) – populāru "light novels" platformu – un automātiski lejupielādē visus "light novel" pieejamos nodaļu tekstus, sākot no lietotāja norādītās pirmās nodaļas saites. Katras nodaļas saturs tiek apstrādāts, notīrot liekos HTML elementus, un tiek saglabāts lokāli kā vienkāršs teksts atsevišķos failos `novels` mapē.
 
-Pēc tam šie teksti tiek sadalīti teikumos, izmantojot NLTK bibliotēkas `sent_tokenize` funkcionalitāti. Apstrādātie dati tiek iekļauti dubultā saistītajā sarakstā – pielāgotā datu struktūrā, kas atvieglo navigāciju starp teikumiem uz priekšu un atpakaļ. Šī struktūra ir būtiska, jo tā ļauj saglabāt informāciju par pašreizējo teikumu, iepriekšējo un nākamo, kas ir svarīgi lasīšanas plūsmas nodrošināšanai.
+Pēc tam šie teksti tiek sadalīti teikumos, izmantojot re bibliotēkas funkcionalitāti. Apstrādātie dati tiek iekļauti dubultā saistītajā sarakstā – pielāgotā datu struktūrā, kas atvieglo navigāciju starp teikumiem uz priekšu un atpakaļ. Šī struktūra ir būtiska, jo tā ļauj saglabāt informāciju par pašreizējo teikumu, iepriekšējo un nākamo, kas ir svarīgi lasīšanas plūsmas nodrošināšanai.
 
 Otra projekta daļa ir tīmekļa lietotne, kas balstīta uz Flask ietvaru. Tā nodrošina divas galvenās saskarnes – `select.html`, kurā lietotājs var pievienot jaunu "light novel" saiti vai izvēlēties jau lejupielādētu darbu, un `reader.html`, kurā tiek attēlots viens teikums vienlaikus. Lietotājs var izmantot pogas vai tastatūras bulttaustiņus, lai pārvietotos starp teikumiem. Pēc pēdējā teikuma vienā nodaļā lietotne automātiski pāriet uz nākamo nodaļu. Saskarne ļauj arī mainīt fontu, fona un teksta krāsas, lai pielāgotu pieredzi savām vajadzībām.
 
 Šis rīks tika veidots ar domu par vienkāršību un funkcionalitāti, ņemot vērā, ka tas tiks izmantots tikai lokāli un vienam lietotājam. Tādēļ nav ieviestas lietotāju autentifikācijas vai datubāzu sistēmas, kas būtu nepieciešamas, ja programmatūra tiktu izmantota publiski. Taču šis dizains padara projektu piemērotu kā pamatu turpmākai attīstībai.
 
-Kopsavilkumā, **Novel Sentence Reader** piedāvā vieglāku pieeju "light novels" lasīšanai, padarot to  viegli lasāmu. Tas ne tikai automatizē datu iegūšanu un struktūrizēšanu, bet arī uzlabo lietotāja pieredzi, izmantojot vienkāršu, bet efektīvu saskarni. Šis projekts ir lielisks piemērs tam, kā datu struktūru un algoritmu zināšanas var pielietot praktiskā, ikdienā noderīgā risinājumā.
+Kopsavilkumā, **Novel Sentence Reader** piedāvā vieglāku pieeju "light novels" lasīšanai, padarot to viegli lasāmu. Tas ne tikai automatizē datu iegūšanu un struktūrizēšanu, bet arī uzlabo lietotāja pieredzi, izmantojot vienkāršu, bet efektīvu saskarni. Šis projekts ir lielisks piemērs tam, kā datu struktūru un algoritmu zināšanas var pielietot praktiskā, ikdienā noderīgā risinājumā.
 
 ## Izmantotās Python bibliotēkas un to pielietojums
 
@@ -21,10 +21,9 @@ Projekta izstrādes laikā tika izmantotas šādas Python bibliotēkas:
 
 - **Flask**: tīmekļa lietotnes izveidei un maršrutēšanai.
 - **Selenium**: tīmekļa lapu automatizētai apstrādei un datu iegūšanai no lightnovelworld.co.
-- **NLTK (Natural Language Toolkit)**: teksta sadalīšanai teikumos.
 - **json**: datu saglabāšanai un apmaiņai starp serveri un klientu.
 - **os**: failu sistēmas darbību veikšanai.
-- **re**: regulāro izteiksmju izmantošanai teksta apstrādē.
+- **re**: regulāro izteiksmju izmantošanai teksta apstrādē un teksta sadalīšanai teikumos.
 - **threading**: fona procesu izpildei, lai neapturētu galveno lietotnes darbību.
 - **webdriver_manager**: automātiskai ChromeDriver pārvaldībai.
 
@@ -38,13 +37,13 @@ Projektā tika izveidota un izmantota **dubultā saistītā saraksta** (double l
 - Sekot līdzi lasīšanas progresam.
 - Automātiski pāriet uz nākamo nodaļu pēc pašreizējās pabeigšanas.
 
-Šāda pieeja nodrošina elastīgu un lietotājam draudzīgu lasīšanas pieredzi.
+Šāda pieeja nodrošina lietotājam efektīku lasīšanu.
 
 ## Lietotnes izmantošana
 
 ### 1. Novela pievienošana
 
-- Apmeklējiet [lightnovelworld.co](https://www.lightnovelworld.co) un atrodiet vēlamo vieglo romānu.
+- Apmeklējiet [lightnovelworld.co](https://www.lightnovelworld.co) un atrodiet vēlamo "light novel".
 - Nokopējiet saiti uz pirmo nodaļu.
 - Atveriet `select.html` failu savā pārlūkprogrammā.
 - Ievietojiet saiti ievades laukā un nospiediet "Add Novel".
@@ -52,7 +51,7 @@ Projektā tika izveidota un izmantota **dubultā saistītā saraksta** (double l
 ### 2. Lasīšanas uzsākšana
 
 - Pēc novela pievienošanas, tā parādīsies sarakstā.
-- Noklikšķiniet uz vēlamā romāna, lai sāktu lasīšanu.
+- Noklikšķiniet uz vēlamā novela, lai sāktu lasīšanu.
 
 ### 3. Lasīšanas režīms (`reader.html`)
 
@@ -107,7 +106,7 @@ novel-sentence-reader/
 2. Instalējiet nepieciešamās bibliotēkas:
 
    ```bash
-   pip install flask selenium nltk lightnovel-scraper
+   pip install flask selenium 
    ```
 
 3. Palaidiet lietotni:

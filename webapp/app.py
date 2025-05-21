@@ -1,9 +1,6 @@
 import os  # Provides functions to interact with the operating system
 import json  # Used for reading and writing JSON files
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify  # Flask modules for web app functionality
-from selenium import webdriver  # Used to control a browser programmatically
-from selenium.webdriver.chrome.service import Service  # Helps configure ChromeDriver as a service
-from selenium.webdriver.common.by import By  # Enum-like class for selecting elements in the DOM
 import re  # Regular expressions for string pattern matching
 from lightnovel_scraper import LightNovelScraper  # Custom class to scrape novel chapters
 import threading # Allows tasks to run in the background without blocking the main server
@@ -13,6 +10,8 @@ app.secret_key = "secret"  # Secret key for session encryption
 # Define paths for novels directory and progress-tracking file
 NOVEL_DIR = os.path.join(os.path.dirname(__file__), "novels")
 PROGRESS_FILE = os.path.join(os.path.dirname(__file__), "progress.json")
+
+
 def split_into_sentences(text):
         sentence_endings = re.compile(r'(?<=[.!?])\s+(?=[A-Z])')
         return sentence_endings.split(text)
