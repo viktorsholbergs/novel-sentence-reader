@@ -7,18 +7,15 @@ from selenium.webdriver.common.by import By  # Enum-like class for selecting ele
 import re  # Regular expressions for string pattern matching
 from lightnovel_scraper import LightNovelScraper  # Custom class to scrape novel chapters
 import threading # Allows tasks to run in the background without blocking the main server
-import nltk  # Import the Natural Language Toolkit library
-# Download the Punkt sentence tokenizer model (only needs to be run once)
-#nltk.download('punkt')
-# Import the sentence tokenizer function from NLTK
-from nltk.tokenize import sent_tokenize
 app = Flask(__name__)  # Create a Flask application instance
 app.secret_key = "secret"  # Secret key for session encryption
 
 # Define paths for novels directory and progress-tracking file
 NOVEL_DIR = os.path.join(os.path.dirname(__file__), "novels")
 PROGRESS_FILE = os.path.join(os.path.dirname(__file__), "progress.json")
-
+def split_into_sentences(text):
+        sentence_endings = re.compile(r'(?<=[.!?])\s+(?=[A-Z])')
+        return sentence_endings.split(text)
 # Node in a doubly linked list storing one sentence
 class SentenceNode:
     def __init__(self, sentence):
@@ -36,13 +33,14 @@ class SentenceList:
         self.total = 0  # Total number of sentences
         self.load(filepath)  # Load the sentences from a file
 
-
+    
     def load(self, filepath):
         with open(filepath, "r", encoding="utf-8") as f:
             text = f.read()
 
-        # Use NLTK's sentence tokenizer (handles punctuation, abbreviations, etc.)
-        sentences = [s.strip() for s in sent_tokenize(text)]
+        # Use re sentence tokenizer 
+        sentences = [s.strip() for s in split_into_sentences(text) if s.strip()]
+
 
         self.total = len(sentences)  # Store sentence count
         prev_node = None
